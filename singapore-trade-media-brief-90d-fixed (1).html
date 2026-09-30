@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Singapore's trade position: domestic vs overseas coverage</title>
+  <style>
+    :root {
+      --ink:#132629; --muted:#5e6c6f; --line:#cdd9d9; --paper:#ffffff;
+      --teal:#087f83; --teal-dark:#064f53; --teal-pale:#e9f4f3;
+      --amber:#f2b544; --red:#b44136; --green:#2b7c57; --blue:#276b9f;
+    }
+    * { box-sizing:border-box; }
+    html, body { margin:0; background:#edf2f2; color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
+    body { padding:18px; }
+    a { color:inherit; text-decoration-color:#6fa9aa; text-underline-offset:2px; }
+    .page {
+      width:min(1440px, calc(100vw - 36px)); margin:0 auto; background:var(--paper);
+      box-shadow:0 8px 28px rgba(20,45,48,.12); overflow:hidden; position:relative;
+      display:grid; grid-template-rows:auto auto auto;
+    }
+    header { background:var(--teal-dark); color:white; padding:20px 28px 16px; display:grid; grid-template-columns:1fr 470px; gap:28px; }
+    .kicker { font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9fd7d7; }
+    h1 { margin:5px 0 5px; font-size:29px; line-height:1.04; letter-spacing:0; }
+    .subtitle { font-size:13px; line-height:1.3; color:#dceaea; }
+    .decision { align-self:center; border-left:3px solid var(--amber); padding-left:16px; font-size:15px; line-height:1.3; font-weight:700; }
+    main { padding:18px 22px 16px; display:grid; grid-template-columns:minmax(0, 1.75fr) minmax(360px, .8fr); gap:20px; align-items:start; }
+    h2 { margin:0 0 9px; font-size:15px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-dark); }
+    .matrix { border-top:3px solid var(--teal); min-width:0; overflow:hidden; }
+    table { width:100%; border-collapse:collapse; table-layout:fixed; }
+    th, td { overflow-wrap:anywhere; word-break:normal; hyphens:auto; }
+    th { background:#f2f7f7; color:#35575a; font-size:11.5px; text-align:left; padding:9px 7px; border-bottom:1px solid var(--line); vertical-align:bottom; }
+    td { font-size:12.1px; line-height:1.34; padding:10px 7px; border-bottom:1px solid #e2e9e9; vertical-align:top; }
+    tr:nth-child(even) td { background:#fbfcfc; }
+    .market { font-weight:700; color:var(--teal-dark); font-size:12.5px; }
+    .volume { font-weight:700; font-size:15px; color:var(--ink); }
+    .trend { color:var(--muted); font-size:10.5px; margin-top:3px; }
+    .tone { font-weight:700; white-space:normal; }
+    .positive { color:var(--green); } .neutral { color:var(--blue); } .critical { color:var(--red); }
+    .headline { display:block; margin-top:3px; color:#314f52; font-style:italic; }
+    .side { display:grid; grid-template-rows:auto auto auto auto; gap:16px; }
+    .panel { border-top:3px solid var(--teal); padding-top:7px; }
+    .chart { height:150px; position:relative; background:linear-gradient(to bottom,#f5f9f9 0,#f5f9f9 1px,transparent 1px) 0 25%/100% 25%; border-bottom:1px solid var(--line); }
+    .chart svg { width:100%; height:100%; overflow:visible; }
+    .legend { display:flex; gap:16px; font-size:11px; color:var(--muted); margin-top:6px; }
+    .legend span:before { content:""; display:inline-block; width:13px; height:3px; margin-right:4px; vertical-align:middle; background:var(--teal); }
+    .legend span:last-child:before { background:var(--amber); }
+    .spikes { display:grid; gap:6px; }
+    .spike { display:grid; grid-template-columns:68px 1fr; gap:9px; padding-bottom:8px; border-bottom:1px solid #e1e8e8; }
+    .spike-date { font-size:11.5px; font-weight:700; color:var(--teal-dark); }
+    .spike p, .watch p, .actions p { margin:0; font-size:11.8px; line-height:1.38; }
+    .spike strong { color:var(--ink); }
+    .watch { display:grid; gap:8px; }
+    .watch p { padding-left:10px; border-left:2px solid #a9c5c6; }
+    .actions { background:var(--teal-pale); padding:12px 13px; border-left:4px solid var(--teal); }
+    .actions p { margin-bottom:9px; }
+    .actions p:last-child { margin-bottom:0; }
+    .num { display:inline-grid; place-items:center; width:16px; height:16px; margin-right:5px; border-radius:50%; background:var(--teal-dark); color:white; font-size:9px; font-weight:700; }
+    footer { border-top:1px solid var(--line); padding:12px 22px 14px; display:grid; grid-template-columns:1fr 430px; gap:20px; font-size:10.5px; line-height:1.38; color:var(--muted); }
+    .caveat { color:#40585a; }
+    .stamp { text-align:right; }
+    @media (max-width: 900px) {
+      body { padding:0; }
+      .page { width:100%; box-shadow:none; display:block; }
+      header { grid-template-columns:1fr; }
+      main { grid-template-columns:1fr; }
+      .matrix { overflow-x:auto; }
+      table { min-width:980px; }
+      footer { grid-template-columns:1fr; }
+      .stamp { text-align:left; }
+    }
+    @media print {
+      @page { size:A3 landscape; margin:0; }
+      html, body { width:420mm; height:297mm; background:white; }
+      body { padding:0; }
+      .page { width:420mm; min-height:297mm; box-shadow:none; }
+    }
+  </style>
+</head>
+<body>
+<article class="page">
+  <header>
+    <div>
+      <div class="kicker">Media intelligence brief · 2 July-29 September 2026</div>
+      <h1>Singapore's trade position: home coverage is about managed resilience; overseas coverage is about strategic utility</h1>
+      <div class="subtitle">News coverage only · Singapore media vs US, China, Japan, India, Malaysia, Indonesia and EU/UK · English plus Chinese, Japanese, Malay, Indonesian and Hindi retrieval</div>
+    </div>
+    <div class="decision">Decision line: Singapore's calibrated, rules-based posture travels well, but abroad it is increasingly recast as a supply-chain and geopolitical asset rather than a defence of open trade in its own right.</div>
+  </header>
+
+  <main>
+    <section class="matrix">
+      <h2>Market readout</h2>
+      <table aria-label="Domestic and overseas coverage comparison">
+        <colgroup>
+          <col style="width:9%"><col style="width:10%"><col style="width:32%"><col style="width:21%"><col style="width:28%">
+        </colgroup>
+        <thead><tr><th>Market</th><th>Volume / trend</th><th>Dominant narratives</th><th>Tone + example headline</th><th>Top outlets / recurring writers</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="market">Singapore</td>
+            <td><div class="volume">6,681</div><div class="trend">Sustained; peaks w/c 20 Jul, 24 Aug, 7 Sep.</div></td>
+            <td>Tariff impact is material but contained; response must avoid wider third-country/export-control costs; FTAs, diversification and worker support are the resilience answer.</td>
+            <td><span class="tone neutral">Neutral → constructive</span><a class="headline" href="https://www.businesstimes.com.sg/singapore/economy-policy/us-tariff-affects-s9-5-billion-singapores-domestic-exports-gan-kim-yong">“US tariff affects S$9.5b of Singapore exports”</a></td>
+            <td>ST, CNA, Business Times, Zaobao, SBR; Low Youjin, Goh Ruoxue, Benjamin Lim, Abigail Ng, Hu Yuanwen and Li Yaning recur on policy detail.</td>
+          </tr>
+          <tr>
+            <td class="market">United States</td>
+            <td><div class="volume">237</div><div class="trend">One sharp peak w/c 3 Aug; otherwise low.</div></td>
+            <td>Section 301 legality and forced-labour enforcement; consumer/business cost of global tariffs; Singapore appears mainly as one economy in a 60-market action.</td>
+            <td><span class="tone critical">Neutral → critical</span><a class="headline" href="https://apnews.com/article/trump-tariffs-supreme-court-forced-labor-4ea091eeee3fa1bfbe55af3f482e6bc1">“Trump imposes double-digit tariffs...”</a></td>
+            <td>AP, Bloomberg/Yahoo, Reuters syndication; Paul Wiseman, Mae Anderson, Elaine Kurtenbach, Chan Ho-him and Yee Ong focus on legal architecture and costs.</td>
+          </tr>
+          <tr>
+            <td class="market">China</td>
+            <td><div class="volume">n/a*</div><div class="trend">Article signal is episodic: leaders' retreat, exports, tariff reaction.</div></td>
+            <td>Opposition to unilateral tariffs; Singapore as a stable ASEAN node; trade growth, connectivity and practical bilateral cooperation outweigh tariff-specific scrutiny.</td>
+            <td><span class="tone positive">Neutral → positive</span><a class="headline" href="https://english.news.cn/20260917/49551c1692724e8baaa53d1d011f9acc/c.html">“Singapore's exports jump 46.2%...”</a></td>
+            <td>Xinhua and Chinese-language Zaobao distribution dominate the retrieved set; Xinhua often carries an agency/editor byline (“Huaxia”), not a named correspondent.</td>
+          </tr>
+          <tr>
+            <td class="market">Japan</td>
+            <td><div class="volume">n/a*</div><div class="trend">Low, event-led; no sustained tariff cycle detected.</div></td>
+            <td>Strategic partnership and high-tech cooperation; Singapore as a trusted base for advanced industries; rules-based resilience rather than tariff confrontation.</td>
+            <td><span class="tone positive">Neutral → positive</span><a class="headline" href="https://www.japantimes.co.jp/news/2026/07/08/japan/japan-singapore-space-cooperation/">“Japan and Singapore ink pact...”</a></td>
+            <td>Japan Times/Jiji and institutional trade sources; reporting is predominantly agency-led, with few repeat named bylines in the retrieved set.</td>
+          </tr>
+          <tr>
+            <td class="market">India</td>
+            <td><div class="volume">352</div><div class="trend">Dominant peak w/c 17 Aug (199).</div></td>
+            <td>Singapore capital and connectivity support “Viksit Bharat”; the roundtable delivers practical pacts; semiconductors, food security, skills and digital links frame mutual gain.</td>
+            <td><span class="tone positive">Positive</span><a class="headline" href="https://www.business-standard.com/amp/external-affairs-defence-security/news/india-and-singapore-ink-pacts-to-strengthen-ties-in-key-sectors-126082001157_1.html">“India and Singapore ink pacts...”</a></td>
+            <td>Business Standard, PTI/Bhasha and ANI syndication; agency desks drive volume more than individual correspondents, including Hindi coverage.</td>
+          </tr>
+          <tr>
+            <td class="market">Malaysia</td>
+            <td><div class="volume">3</div><div class="trend">Very low Singapore-specific follow-through.</div></td>
+            <td>Comparative tariff exposure (Singapore 12.5% vs Malaysia 10%); ASEAN competitiveness; domestic Singapore reporting is largely mirrored rather than independently reframed.</td>
+            <td><span class="tone neutral">Neutral</span><a class="headline" href="https://www.thestar.com.my/aseanplus/aseanplus-news/2026/07/25/trump-imposes-new-125-tariff-on-singapore-affecting-one-third-of-exports-to-us">“Trump imposes new 12.5% tariff...”</a></td>
+            <td>The Star/ASEANPlus and aggregators; bylines are mostly absent or syndicated, limiting correspondent attribution.</td>
+          </tr>
+          <tr>
+            <td class="market">Indonesia</td>
+            <td><div class="volume">78</div><div class="trend">Peak w/c 6 Jul (47); fades quickly.</div></td>
+            <td>Concrete delivery from 26 agreements; energy, digital and food/supply-chain integration; bilateral trust and Singapore investment anchor the frame.</td>
+            <td><span class="tone positive">Positive</span><a class="headline" href="https://www.antaranews.com/berita/5637460/leaders-retreat-ri-singapura-hasilkan-26-kesepakatan-ini-daftarnya">“Leaders' Retreat produced 26 agreements”</a></td>
+            <td>ANTARA leads in Bahasa and English; Fathur Rochman and Aditya Ramadhan repeatedly frame outcomes as practical cooperation and strategic trust.</td>
+          </tr>
+          <tr>
+            <td class="market">EU / UK</td>
+            <td><div class="volume">56</div><div class="trend">Small peaks w/c 27 Jul, 3 Aug and 24 Aug.</div></td>
+            <td>Singapore is the working bilateral FTA template; EU-ASEAN trade is diversification/de-risking; a bloc-to-bloc deal remains desirable but institutionally difficult.</td>
+            <td><span class="tone neutral">Neutral → positive</span><a class="headline" href="https://amp.dw.com/en/eu-finally-clinching-trade-deals-with-southeast-asian-states/a-79388278">“EU finally clinching trade deals...”</a></td>
+            <td>DW, AP and specialist EU-ASEAN sources; David Hutt consistently takes the Europe-ASEAN architecture and China/US de-risking angle.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <aside class="side">
+      <section class="panel">
+        <h2>Weekly signal</h2>
+        <div class="chart" aria-label="Indexed mentions by week">
+          <svg viewBox="0 0 450 112" role="img">
+            <polyline fill="none" stroke="#087f83" stroke-width="3" points="0,87 35,65 69,67 104,19 138,66 173,70 208,67 242,38 277,14 312,49 346,11 381,68 415,60 450,101"/>
+            <polyline fill="none" stroke="#f2b544" stroke-width="3" points="0,108 35,82 69,103 104,37 138,98 173,67 208,103 242,13 277,90 312,96 346,101 381,104 415,102 450,105"/>
+            <g fill="#b44136"><circle cx="104" cy="19" r="4"/><circle cx="242" cy="38" r="4"/><circle cx="277" cy="14" r="4"/></g>
+            <g font-size="8" fill="#5e6c6f"><text x="0" y="111">29 Jun</text><text x="95" y="111">20 Jul</text><text x="233" y="111">17 Aug</text><text x="268" y="111">24 Aug</text><text x="404" y="111">28 Sep</text></g>
+          </svg>
+        </div>
+        <div class="legend"><span>Singapore</span><span>Foreign markets*</span></div>
+      </section>
+
+      <section class="panel spikes">
+        <h2>Three biggest spikes</h2>
+        <div class="spike"><div class="spike-date">20-26 Jul</div><p><strong>Trigger:</strong> USTR imposed a 12.5% Section 301 tariff linked to forced-labour import bans. <strong>First foreign pickup:</strong> AP on 23 Jul (Wiseman/Anderson), then AP Asia reaction and Bloomberg/Yahoo; domestic outlets followed within hours.</p></div>
+        <div class="spike"><div class="spike-date">17-23 Aug</div><p><strong>Trigger:</strong> the 4th India-Singapore Ministerial Roundtable and new food, telecoms and maritime cooperation. <strong>First foreign pickup:</strong> ANI/PTI-linked Indian feeds from 18 Aug, then Business Standard in Hindi and English.</p></div>
+        <div class="spike"><div class="spike-date">24-30 Aug</div><p><strong>Trigger:</strong> Gan's Washington visit plus PM Wong's warning that trade is now security-driven. <strong>First foreign pickup:</strong> no material original foreign pickup in the top Meltwater results; the cycle remained Singapore-led.</p></div>
+      </section>
+
+      <section class="panel watch">
+        <h2>Foreign reporter watch</h2>
+        <p><strong>Paul Wiseman / Mae Anderson, AP:</strong> U.S. tariff law, deadlines and domestic cost; Singapore is one affected economy.</p>
+        <p><strong>Elaine Kurtenbach / Chan Ho-him, AP Asia:</strong> regional reaction, legitimacy of forced-labour claims and legal durability.</p>
+        <p><strong>Yee Ong, Bloomberg:</strong> Singapore's pushback and immediate market/economic exposure.</p>
+        <p><strong>David Hutt, DW:</strong> EU-ASEAN trade architecture, supply-chain diversification and strategic de-risking.</p>
+        <p><strong>Fathur Rochman / Aditya Ramadhan, ANTARA:</strong> tangible bilateral agreements, trust and Indonesian delivery priorities.</p>
+      </section>
+
+      <section class="actions">
+        <h2>What differs, what is emerging, what to do</h2>
+        <p><span class="num">1</span><strong>Largest divergence:</strong> domestic media foregrounds calibration, firm/worker support and policy trade-offs; overseas media foregrounds Singapore's utility as capital, logistics, technology and an FTA precedent.</p>
+        <p><span class="num">2</span><strong>Under-covered locally:</strong> the EU “bilateral-deals-first” pathway to an ASEAN-wide framework is gaining foreign traction, while Singapore coverage remains meeting- and statement-led.</p>
+        <p><span class="num">3</span><strong>Press implication:</strong> pair every rules-based-trade message with one concrete overseas benefit; pre-brief AP/Reuters/Bloomberg and specialist regional writers before travel; publish same-day Mandarin/Bahasa/Japanese fact sheets with tariff exposure, exemptions and Singapore's red lines.</p>
+      </section>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="caveat"><strong>Method:</strong> Meltwater unified retrieval, 2 Jul-29 Sep 2026, news/print; directional indexed mentions include syndication and are not deduplicated. Market is publisher country. China/Japan aggregate calls failed twice, so no volume is imputed; their qualitative read uses retrieved articles and current public validation. Temporary exact-search creation required approval and was not completed. Foreign weekly line excludes China/Japan. Tone is editorial framing, not automated sentiment.</div>
+    <div class="stamp"><strong>Prepared 29 Sep 2026 · 11:26 SGT</strong><br>Key evidence: <a href="https://apnews.com/article/us-tariffs-trump-labor-reaction-china-asia-b178ead12f022009817c60010ac07eb3">AP regional reaction</a> · <a href="https://www.mti.gov.sg/newsroom/oral-reply-to-pqs-on-impact-of-12-5--tariff-on-singapore-s-economy-and-measures-taken-to-pursue-exemption/">MTI tariff reply</a> · <a href="https://www.zaobao.com.sg/finance/singapore/story20260908-9646934">Zaobao (Chinese)</a> · <a href="https://hindi.business-standard.com/india-news/piyush-goyal-visits-singapore-high-level-meeting-to-increase-fdi-and-investment-id-545728">Business Standard (Hindi)</a> · <a href="https://www.antaranews.com/berita/5637460/leaders-retreat-ri-singapura-hasilkan-26-kesepakatan-ini-daftarnya">ANTARA (Bahasa)</a></div>
+  </footer>
+</article>
+</body>
+</html>
